@@ -10,6 +10,29 @@
 <body>
   <div id='app'></div>
 
+  <script> 
+    window.API = {
+      fetchFriends() {
+        return new Promise((res, rej) => {
+          const friends = [
+            {
+              name: 'Jordyn',
+              active: true,
+            },
+            {
+              name: 'Mikenzi',
+              active: true,
+            },
+            {
+              name: 'Jake',
+              active: false
+            }
+          ]
+          setTimeout(() => res(friends), 2000);
+        })
+    }}
+  </script>
+
   <script type='text/babel'>
     function ActiveFriends (props) {
       return (
@@ -46,27 +69,29 @@
       constructor(props) {
         super(props)
         this.state = {
-          friends: [
-            {
-              name: 'Jordyn',
-              active: true,
-            },
-            {
-              name: 'Mikenzi',
-              active: true,
-            },
-            {
-              name: 'Jake',
-              active: false
-            }
-          ],
+          friends: [],
           input: '',
+          loading: true
         }
         this.handleRemoveFriend = this.handleRemoveFriend.bind(this)
         this.updateInput = this.updateInput.bind(this)
         this.handleAddFriend = this.handleAddFriend.bind(this)
         this.handleToggleFriend = this.handleToggleFriend.bind(this)
       }
+
+      //why did we call an ajax request here? 
+      componentDidMount() {
+        console.log("houston, we've mounted our dom");
+        API.fetchFriends()
+          .then((friends) => {
+            this.setState({
+              friends,
+              loading: false
+              }
+            )
+          })
+      }
+
       handleAddFriend() {
         this.setState((currentState) => {
           return {
@@ -103,7 +128,13 @@
           input: value
         })
       }
+
       render() {
+
+        if (this.state.loading === true){
+          return <h1>Loading</h1>
+        }
+
         return (
           <div>
             <input
