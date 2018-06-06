@@ -5,7 +5,7 @@ import Topics from './Topics'
 import {
   BrowserRouter,
   Route,
-  Link,
+  Link
 } from 'react-router-dom'
 
 class App extends Component {
@@ -31,3 +31,8 @@ class App extends Component {
 }
 
 export default App;
+
+
+// notes
+// you only need BrowswerRouter at the root of your application
+// it allows you to pass params 
